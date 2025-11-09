@@ -1,0 +1,3 @@
+Title: The Internet
+
+The Internet is a global network of interconnected computers that communicate using standardized protocols. It originated from ARPANET in the 1960s and became publicly accessible in the 1990s. The Internet has revolutionized communication, commerce, education, and entertainment, connecting billions of people worldwide and enabling instant access to information.

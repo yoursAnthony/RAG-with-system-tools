@@ -1,0 +1,3 @@
+Title: Big Data
+
+Big Data refers to extremely large datasets that traditional data processing software cannot handle adequately. It is characterized by the three Vs: Volume (amount of data), Velocity (speed of data generation), and Variety (different types of data). Big Data analytics helps organizations make better decisions by uncovering hidden patterns, correlations, and insights.

@@ -1,0 +1,3 @@
+Title: Virtual Reality
+
+Virtual Reality (VR) is a simulated experience that can be similar to or completely different from the real world. VR systems use headsets or multi-projected environments to generate realistic images, sounds, and sensations that simulate a user's physical presence in a virtual environment. Applications include gaming, training simulations, and therapy.

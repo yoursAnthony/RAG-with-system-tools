@@ -1,0 +1,3 @@
+Title: 3D Printing
+
+3D printing, or additive manufacturing, creates three-dimensional objects from digital files by depositing material layer by layer. Materials used include plastics, metals, ceramics, and even biological tissues. Applications span prototyping, custom manufacturing, medical implants, aerospace components, and construction. 3D printing enables rapid prototyping and customization.

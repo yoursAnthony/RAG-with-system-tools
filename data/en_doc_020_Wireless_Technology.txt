@@ -1,0 +1,3 @@
+Title: Wireless Technology
+
+Wireless technology transmits data without physical connections, using radio waves, infrared, or microwave signals. Key technologies include Wi-Fi, Bluetooth, cellular networks (4G, 5G), and satellite communications. Wireless technology has enabled mobile computing, IoT devices, and seamless connectivity, fundamentally changing how we communicate and access information.

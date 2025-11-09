@@ -1,0 +1,3 @@
+Title: Autonomous Vehicles
+
+Autonomous vehicles, also known as self-driving cars, use sensors, cameras, radar, and artificial intelligence to navigate without human intervention. They process data from their surroundings to detect obstacles, read traffic signs, and make driving decisions. Companies like Tesla, Waymo, and traditional automakers are developing autonomous driving technology.

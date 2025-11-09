@@ -1,0 +1,3 @@
+Title: Biometrics
+
+Biometrics refers to the measurement and analysis of unique physical or behavioral characteristics for identification purposes. Common biometric methods include fingerprint recognition, facial recognition, iris scanning, and voice recognition. Biometrics provide enhanced security for devices, facilities, and systems, though they also raise privacy concerns.

@@ -1,0 +1,3 @@
+Title: Artificial Neural Networks
+
+Artificial neural networks are computing systems inspired by biological neural networks in animal brains. They consist of interconnected nodes (neurons) organized in layers. Neural networks learn by adjusting connection weights based on training data. Deep learning, using multi-layered neural networks, has achieved breakthroughs in image recognition, language translation, and game playing.

@@ -1,0 +1,3 @@
+Title: Nanotechnology
+
+Nanotechnology involves manipulating matter at the atomic and molecular scale, typically at dimensions between 1 and 100 nanometers. At this scale, materials exhibit unique properties different from their bulk counterparts. Applications include medicine (targeted drug delivery), electronics (smaller, faster chips), materials science, and energy production.
