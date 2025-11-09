@@ -4,6 +4,10 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
+    gpus: all
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     restart: unless-stopped
     # ports:
     #   - "11434:11434"     # если нужно ходить на Ollama с хоста
