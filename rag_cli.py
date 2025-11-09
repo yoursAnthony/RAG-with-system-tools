@@ -60,8 +60,7 @@ PROMPT = ChatPromptTemplate.from_messages(
          "Вопрос: {question}\n\n"
          "Контекст из базы знаний:\n{context}\n\n"
          "Инструкция: Если вопрос требует вызова инструмента (время или загрузка системы) - вызови его. "
-         "Если вопрос по базе знаний — используй только контекст выше."
-         "Если контекст из базы знаний соответствует запросу пользователя - в конце перечисли источники (metadata.source) в одну строку.")
+         "Если вопрос по базе знаний — используй только контекст выше.")
     ]
 )
 
@@ -141,16 +140,32 @@ def load_vectorstore() -> Chroma:
         logger.error(f"Ошибка при загрузке vectorstore: {e}", exc_info=True)
         raise
 
+# def format_sources(docs) -> str:
+#     seen = []
+#     for d in docs:
+#         src = d.metadata.get("source")
+#         if src and src not in seen:
+#             seen.append(src)
+
+#     sources = ", ".join(seen) if seen else "нет источников"
+#     logger.debug(f"Найдено уникальных источников: {len(seen)}")
+
+#     return sources
+
 def format_sources(docs) -> str:
-    seen = []
+    import os
+    seen = set()
+    out = []
     for d in docs:
         src = d.metadata.get("source")
-        if src and src not in seen:
-            seen.append(src)
-
-    sources = ", ".join(seen) if seen else "нет источников"
+        if not src:
+            continue
+        norm = os.path.normpath(src).replace("\\", "/")
+        if norm not in seen:
+            seen.add(norm)
+            out.append(norm)
+    sources = ", ".join(out) if out else "нет источников"
     logger.debug(f"Найдено уникальных источников: {len(seen)}")
-
     return sources
 
 def is_prompt_injection(question: str) -> bool:
