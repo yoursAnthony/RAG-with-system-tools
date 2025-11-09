@@ -208,5 +208,5 @@ __marimo__/
 
 
 # Chroma DB
-.bin
-.sqlite3
+*.bin
+*.sqlite3
