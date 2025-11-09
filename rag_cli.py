@@ -247,21 +247,29 @@ def answer_question(q: str) -> Dict[str, Any]:
                 # Выполняем соответствующий tool
                 if tool_name == "get_system_load":
                     result = get_system_load.invoke({})
+                    tool_results.append(f"Текущая загрузка:\n{result}")
                 elif tool_name == "get_moscow_time":
                     result = get_moscow_time.invoke({})
+                    tool_results.append(f"Текущее время в Москве: {result}")
                 else:
                     result = f"Неизвестный tool: {tool_name}"
+                    tool_results.append(result)
                     logger.warning(f"Запрошен неизвестный tool: {tool_name}")
-                
-                messages_with_tools.append(
-                    ToolMessage(content=result, tool_call_id=tool_call["id"])
-                )
 
-            # ВТОРОЙ ВЫЗОВ LLM - формирует финальный ответ с учетом tool результатов
-            logger.info("Второй вызов LLM для формирования финального ответа...")
-            final_response = llm_with_tools.invoke(messages_with_tools)
-            answer = final_response.content
-            logger.info(f"Tool результаты добавлены к ответу")
+            # Второй вызов LLM провоцирует галлюцинации для тулы get_moscow_time
+            # Принятно решение вставить заглушку для этого блока кода
+            #     messages_with_tools.append(
+            #         ToolMessage(content=result, tool_call_id=tool_call["id"])
+            #     )
+
+            # # ВТОРОЙ ВЫЗОВ LLM - формирует финальный ответ с учетом tool результатов
+            # logger.info("Второй вызов LLM для формирования финального ответа...")
+            # final_response = llm_with_tools.invoke(messages_with_tools)
+            # answer = final_response.content
+
+            # БЕЗ второго вызова LLM: отдаём прямой ответ из tools
+            answer = "\n\n".join(tool_results)
+            logger.info(f"Сформирован финальный ответ напрямую из результатов tools (без второго вызова LLM)")
         else:
             answer = response.content
             logger.debug("Tools не были вызваны")
