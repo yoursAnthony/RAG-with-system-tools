@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    # ports:
+    #   - "11434:11434"     # если нужно ходить на Ollama с хоста
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-app
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      # Эти переменные просто прокинутся в entrypoint.sh
+      - OLLAMA_HOST=http://ollama:11434
+      - PULL_MODELS=true
+      - EMBED_MODEL=nomic-embed-text   # должен совпадать с EMBED_MODEL в коде ingest/rag
+      - GEN_MODEL=qwen2.5              # должен совпадать с GEN_MODEL в rag_cli.py :contentReference[oaicite:2]{index=2}
+    volumes:
+      - ./data:/app/data               # ваши документы для индексирования
+      - ./chroma_db:/app/chroma_db     # персистентная БД Chroma (см. PERSIST_DIR) :contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4}
+      - ./logs:/app/logs               # логи (см. logging_config.py) :contentReference[oaicite:5]{index=5}
+    stdin_open: true    # чтобы можно было общаться в CLI
+    tty: true
+
+volumes:
+  ollama_models:
