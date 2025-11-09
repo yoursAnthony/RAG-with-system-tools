@@ -7,3 +7,4 @@ langchain-community>=0.3
 python-dotenv>=1.0
 chardet>=5.2.0
 pypdf>=6.2.0
+pytest>=9.0.0
