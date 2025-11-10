@@ -45,6 +45,7 @@ Entrypoint контейнера автоматически загружает о
 
 ```bash
 # Устанавливаем зависимости
+sudo apt update
 sudo apt install -y ca-certificates curl gnupg lsb-release
 
 # Добавляем официальный GPG ключ Docker
@@ -75,7 +76,7 @@ docker --version
 docker compose version
 ```
 
-### Подготовка GPU (драйвер / CUDA)
+### Подготовка GPU (CUDA Toolkit)
 
 #### Выполните последовательно следующие команды:
 
@@ -139,26 +140,21 @@ docker exec -it rag-app python ingest.py
 docker exec -it rag-app python rag_cli.py
 ```
 
-## Примечания по конфигурации
-
-### Версии моделей
-
-Версии моделей заданы в коде:
-```python
-GEN_MODEL = "qwen2.5"
-EMBED_MODEL = "nomic-embed-text"
+## Тесты
+Оценка RAG с участием Judge LLM:
+```bash
+pytest test_llm_metrics.py -v -s
 ```
 
-Можно изменить через переменные окружения при запуске контейнеров.
+Тесты функциональности:
+```bash
+pytest test_rag_system.py -v -s
+```
 
-### Python-зависимости
-
-Все необходимые зависимости перечислены в `requirements.txt`:
-- `psutil`
-- `pytz`
-- LangChain пакеты
-- Chroma
-- и другие
+Тесты основанные на ключевых словах:
+```bash
+pytest test_metrics.py -v -s
+```
 
 ---
 
