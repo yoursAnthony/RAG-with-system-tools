@@ -177,7 +177,7 @@ def format_sources(docs) -> str:
 
 def is_prompt_injection(question: str) -> bool:
     danger_phrases = [
-        "системный промпт", "system prompt", "твои инструкции",
+        "системный промпт", "system prompt", "tools", "твои инструкции",
         "your instructions", "repeat", "ignore previous", "твои правила"
     ]
     q_lower = question.lower()

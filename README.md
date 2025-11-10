@@ -146,7 +146,7 @@ docker exec -it rag-app python rag_cli.py
 pytest test_llm_metrics.py -v -s
 ```
 
-Тесты функциональности:
+Тесты функциональности и безопасности:
 ```bash
 pytest test_rag_system.py -v -s
 ```
