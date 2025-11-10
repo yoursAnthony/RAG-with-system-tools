@@ -31,7 +31,7 @@ services:
     environment:
       # Эти переменные просто прокинутся в entrypoint.sh
       - OLLAMA_HOST=http://ollama:11434
-      - PULL_MODELS=true
+      - PULL_MODELS=false
       - EMBED_MODEL=nomic-embed-text   # должен совпадать с EMBED_MODEL в коде ingest/rag
       - GEN_MODEL=qwen2.5              # должен совпадать с GEN_MODEL в rag_cli.py :contentReference[oaicite:2]{index=2}
     volumes:

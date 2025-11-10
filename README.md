@@ -115,24 +115,22 @@ docker run --rm --gpus all nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi
 docker compose up -d --build
 ```
 
-**Что происходит при запуске:**
-- Сервис Ollama поднимется и будет доступен на `http://ollama:11434` внутри сети compose
-- Entrypoint приложения загрузит модели (если `PULL_MODELS=true`)
-- Выполнится индексация данных при первом старте
-- Запустится CLI приложения
-
-[Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)  
-[Ollama CLI Documentation](https://github.com/ollama/ollama)
-
-#### Проверка статуса контейнеров
-
-```bash
-docker ps
-docker logs -f rag-app
-```
-
 Убедитесь, что контейнеры находятся в состоянии `healthy`/`running`.
 
+### Установка моделей
+```bash
+# nomic-embed-text
+docker exec -it ollama ollama pull nomic-embed-text
+```
+```bash
+# qwen2.5
+docker exec -it ollama ollama pull qwen2.5
+```
+
+### Первичная векторизация документов
+```bash
+docker exec -it rag-app python ingest.py 
+```
 ### Запуск общения с LLM
 
 Для входа в CLI внутри контейнера приложения:
@@ -145,7 +143,7 @@ docker exec -it rag-app python rag_cli.py
 
 ### Версии моделей
 
-Версии моделей заданы в коде/entrypoint:
+Версии моделей заданы в коде:
 ```python
 GEN_MODEL = "qwen2.5"
 EMBED_MODEL = "nomic-embed-text"
@@ -161,16 +159,6 @@ EMBED_MODEL = "nomic-embed-text"
 - LangChain пакеты
 - Chroma
 - и другие
-
-### Ручная загрузка моделей Ollama
-
-Если понадобится вручную загрузить модели на хосте или в контейнере Ollama:
-
-```bash
-ollama pull qwen2.5
-ollama pull nomic-embed-text
-```
-[Ollama CLI Documentation](https://github.com/ollama/ollama)
 
 ---
 

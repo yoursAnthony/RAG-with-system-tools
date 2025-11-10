@@ -3,7 +3,7 @@ set -euo pipefail
 
 # -------- настройки --------
 : "${OLLAMA_HOST:=http://ollama:11434}"
-: "${PULL_MODELS:=true}"              # можно выключить установкой PULL_MODELS=false
+: "${PULL_MODELS:=false}"              # можно выключить установкой PULL_MODELS=false
 : "${EMBED_MODEL:=nomic-embed-text}"  # должен совпадать с EMBED_MODEL в коде
 : "${GEN_MODEL:=qwen2.5}"             # должен совпадать с GEN_MODEL в коде
 # ---------------------------
@@ -25,13 +25,42 @@ for i in {1..120}; do
   fi
 done
 
-# По желанию — автопул моделей через HTTP API Ollama
+# По желанию — автопул моделей (используем ollama CLI для синхронности)
 if [ "${PULL_MODELS}" = "true" ]; then
-  echo "[entrypoint] Pull ${EMBED_MODEL}"
-  curl -fsS -X POST "${OLLAMA_HOST}/api/pull" -d "{\"name\":\"${EMBED_MODEL}\"}" || true
+  echo "[entrypoint] Загрузка ${EMBED_MODEL}..."
 
-  echo "[entrypoint] Pull ${GEN_MODEL}"
-  curl -fsS -X POST "${OLLAMA_HOST}/api/pull" -d "{\"name\":\"${GEN_MODEL}\"}" || true
+  # Есть ли модель?
+  if ! curl -fsS "${OLLAMA_HOST}/api/show" \
+        -H 'Content-Type: application/json' \
+        -d "{\"model\":\"${EMBED_MODEL}\"}" >/dev/null 2>&1; then
+    echo "[entrypoint] Модель ${EMBED_MODEL} не найдена, загружаем (stream)..."
+    # Стримим прогресс: каждую JSON-строчку приводим к короткому статусу
+    curl -N "${OLLAMA_HOST}/api/pull" \
+      -H 'Content-Type: application/json' \
+      -d "{\"model\":\"${EMBED_MODEL}\",\"stream\":true}" \
+      | jq -rc '."status" // .status // . | tostring'
+    echo "[entrypoint] ${EMBED_MODEL} — готово"
+  else
+    echo "[entrypoint] Модель ${EMBED_MODEL} уже загружена"
+  fi
+
+  echo "[entrypoint] Загрузка ${GEN_MODEL}..."
+  if ! curl -fsS "${OLLAMA_HOST}/api/show" \
+        -H 'Content-Type: application/json' \
+        -d "{\"model\":\"${GEN_MODEL}\"}" >/dev/null 2>&1; then
+    echo "[entrypoint] Модель ${GEN_MODEL} не найдена, загружаем (stream)..."
+    curl -N "${OLLAMA_HOST}/api/pull" \
+      -H 'Content-Type: application/json' \
+      -d "{\"model\":\"${GEN_MODEL}\",\"stream\":true}" \
+      | jq -rc '."status" // .status // . | tostring'
+    echo "[entrypoint] ${GEN_MODEL} — готово"
+  else
+    echo "[entrypoint] Модель ${GEN_MODEL} уже загружена"
+  fi
+
+  # Проверка загруженных моделей
+  echo "[entrypoint] Проверка доступных моделей:"
+  curl -fsS "${OLLAMA_HOST}/api/tags" | grep -o '"name":"[^"]*"' || echo "Не удалось получить список моделей"
 fi
 
 # Запуск приложения:

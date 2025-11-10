@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # Системные зависимости (минимально необходимые)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates bash tini \
+    curl ca-certificates bash tini jq \
     && rm -rf /var/lib/apt/lists/*
 
 # Рабочая директория
